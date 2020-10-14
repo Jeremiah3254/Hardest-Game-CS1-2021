@@ -21,12 +21,38 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
     private Timer timer;
     private int frameCount = 0;
     private Player player;
+    private Border leftWall;
+    private Border rightWall;
+    private Border topWall;
+    private Border bottomWall;
+    private Enemy enemy1;
+    private Enemy enemy2;
+    private Goal finish;
     
     public HardestGame() {
         this.player = new Player(50,300);
+        this.leftWall = new Border(0,0,25,600);
+        this.rightWall = new Border(750,0,25,600);
+        this.topWall = new Border(0,0,800,25);
+        this.bottomWall = new Border(0,545,800,25);
+        this.finish = new Goal(700,25,50,50);
+        //this.enemy1 = new Enemy(50,25,50,50);
+        //this.enemy2 = new Enemy(50,100,50,50);
+        
+        
         timer = new Timer();
-        timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/12); //fps 12
+        timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/60); //fps 12
     }
+    
+   
+    
+    private void checkCollisions() {
+        if (enemy1.getX() == rightWall.getX()) {
+            enemy1.hitsWall(enemy1);
+        }
+    }
+    
+    
     
      @Override
      public void paintComponent(Graphics g) {
@@ -35,9 +61,21 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
         
         frameCount++;
         
+        
         this.setBackground(Color.WHITE);		
+        this.enemy1 = new Enemy(frameCount,25,50,50);
+        this.enemy2 = new Enemy(frameCount,100,50,50);
+        checkCollisions();
         
         player.draw(g);	
+        leftWall.draw(g);
+        rightWall.draw(g);
+        topWall.draw(g);
+        bottomWall.draw(g);
+        finish.draw(g);
+        enemy1.draw(g);
+        enemy2.draw(g);
+        
     }
      
     private class ScheduleTask extends TimerTask {
