@@ -16,16 +16,17 @@ import java.awt.Graphics;
 public class Goal {
     private int x, y;
     private final int width,height;
-    private final boolean isFinish = false;
+    private final boolean isFinish;
     private final static Color COLOR = Color.GREEN;
 
     //3.a. constructor for Border
     
-     public Goal(int x, int y, int width, int height) {
+    public Goal(int x, int y, int width, int height, boolean isFinish) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.isFinish = isFinish;
     }
 
     //3.b draws a rectangle

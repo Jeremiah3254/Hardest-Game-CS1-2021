@@ -39,9 +39,39 @@ public class Enemy {
     
     public void draw(Graphics g) {
         g.setColor(COLOR);
-        g.drawRect(x, y, WIDTH, HEIGHT);
-        g.fillRect(x, y, WIDTH, HEIGHT);
+        g.drawOval(x, y, WIDTH, HEIGHT);
+        g.fillOval(x, y, WIDTH, HEIGHT);
     }
+    
+    //6.a. implement method collideWorldBounds
+    /**
+     * Checks if enemy hits border, if so, turns around
+     * @param border Boundaries of the room
+     */
+    public void collideWorldBounds(Border border) {
+        //top wall
+        if (this.y < border.getY()) {
+              this.vy *= -1;
+          }
+        if (this.y > border.getHeight()-25) {
+              this.vy *= -1;
+          }
+        if (this.x < border.getX()) {
+              this.vx *= -1;
+          }
+        if (this.x > border.getWidth()-25) {
+              this.vx *= -1;
+          }
+    }
+    
+    
+    public void move(){
+        
+        x += vx;
+        y += vy;
+       
+     }
+    
 
     public int getX() {
         return x;

@@ -21,24 +21,25 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
     private Timer timer;
     private int frameCount = 0;
     private Player player;
-    private Border leftWall;
-    private Border rightWall;
-    private Border topWall;
-    private Border bottomWall;
+    private Border room1;
     private Enemy enemy1;
     private Enemy enemy2;
+    private Enemy enemy3;
+    private Enemy enemy4;
     private Goal finish;
+    private Goal start;
     
     public HardestGame() {
+        this.room1 = new Border(0,0,800,600);
         this.player = new Player(50,300);
-        this.leftWall = new Border(0,0,25,600);
-        this.rightWall = new Border(750,0,25,600);
-        this.topWall = new Border(0,0,800,25);
-        this.bottomWall = new Border(0,545,800,25);
-        this.finish = new Goal(700,25,50,50);
+        this.finish = new Goal(700,0,100,600,false);
         //this.enemy1 = new Enemy(50,25,50,50);
         //this.enemy2 = new Enemy(50,100,50,50);
-        
+        this.start = new Goal(0,0,100,600,false);
+        this.enemy1 = new Enemy(0,25,-5,-5);
+        this.enemy2 = new Enemy(0,100,-10,-10);
+        this.enemy3 = new Enemy(0,40,-7,-7);
+        this.enemy4 = new Enemy(0,70,-11,-11);
         
         timer = new Timer();
         timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/60); //fps 12
@@ -46,11 +47,11 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
     
    
     
-    private void checkCollisions() {
-        if (enemy1.getX() == rightWall.getX()) {
-            enemy1.hitsWall(enemy1);
-        }
-    }
+   //50,300 player
+    //400,300,1,1 enemy
+    //0,100,100,600,false start
+    // 700,100,100,100,600,true finish
+    // 0,100,800,600; border
     
     
     
@@ -62,21 +63,39 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
         frameCount++;
         
         
-        this.setBackground(Color.WHITE);		
-        this.enemy1 = new Enemy(frameCount,25,50,50);
-        this.enemy2 = new Enemy(frameCount,100,50,50);
-        checkCollisions();
+        this.setBackground(Color.black);		
         
-        player.draw(g);	
-        leftWall.draw(g);
-        rightWall.draw(g);
-        topWall.draw(g);
-        bottomWall.draw(g);
+        
+        
+        
+        room1.draw(g);	
         finish.draw(g);
+        start.draw(g);
+        player.draw(g);
         enemy1.draw(g);
         enemy2.draw(g);
+        enemy3.draw(g);
+        enemy4.draw(g);
+        player.playerVsEnemy(enemy1, start);
+        player.playerVsEnemy(enemy2, start);
+        player.playerVsEnemy(enemy3, start);
+        player.playerVsEnemy(enemy4, start);
+        enemy1.collideWorldBounds(room1);
+        enemy2.collideWorldBounds(room1);
+        enemy3.collideWorldBounds(room1);
+        enemy4.collideWorldBounds(room1);
+        enemy1.move();
+        enemy2.move();
+        enemy3.move();
+        enemy4.move();
+        //player.isInBounds(room1);
+        
+        //10. call any methods needed to make interactions happen
+        
         
     }
+     
+    
      
     private class ScheduleTask extends TimerTask {
 
@@ -101,12 +120,37 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
     
      @Override
     public void keyPressed(KeyEvent e) {
+        //8.c. update calls to player.move based on 8.b
         System.out.printf("\nKeyCode: %d was pressed",e.getKeyCode());
+        if (e.getKeyCode() == 68) {
+         player.move(1,0);   
+        } 
+        if (e.getKeyCode() == 65) {
+        player.move(-1,0);
+        }
+        if (e.getKeyCode() == 87) {
+        player.move(0,-1);
+        }
+        if (e.getKeyCode() == 83) {
+        player.move(0,1);
     }
+    }
+   
     
      @Override
     public void keyReleased(KeyEvent e) {
-        
+        if (e.getKeyCode() == 68) {
+         player.move(0,0);   
+        } 
+        if (e.getKeyCode() == 65) {
+        player.move(0,0);
+        }
+        if (e.getKeyCode() == 87) {
+        player.move(0,0);
+        }
+        if (e.getKeyCode() == 83) {
+        player.move(0,0);
+    }
     }
 
     @Override

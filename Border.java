@@ -10,7 +10,7 @@ import java.awt.Graphics;
  */
 public class Border {
     private final int x,y,width,height;
-    private final static Color COLOR = Color.BLACK;
+    private final static Color COLOR = Color.WHITE;
     
     public Border(int x, int y,int width,int height) {
         this.x = x;
